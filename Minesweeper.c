@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include <wchar.h>
+#include <string.h>
 #include <stdlib.h>
 #include <time.h>
 int newScreen(int**,int , int ,int );
@@ -30,7 +30,7 @@ int main(int argc, char *argv[])
 	Minefield = Dynamic_2d(M,N);
 	ScreenMinefield = Dynamic_2d(M,N);
 	fillMat(Minefield,M,N,' '); 
-	fillMat(ScreenMinefield,M,N,219); 
+	fillMat(ScreenMinefield,M,N,254); 
 	put_mines(Minefield,M,N,K);
 	addNumber(Minefield,M,N);
 	if( ! saveInTxt("Cheat Sheet.txt","w",Minefield,M,N)) printf("Can't open file.\n");
@@ -51,22 +51,36 @@ int saveInTxt(const char* Filename,const char* Mode,int** M,int Rows,int Cols)
 	fclose(outFile);
 	return 1;
 }
+int getInt(char* buffer, FILE* instream)
+{
+	char* stringFound;
+	int number;
+	do 
+	{
+		fgets(buffer,sizeof(buffer),instream);
+		*(buffer + strlen(buffer) - 1) = 0;
+     	number = strtol(buffer,&stringFound,10);	
+	} while(strlen(stringFound) > 0);
+	return number;
+}
 
 int GetIntWithinLimits (char* message,int l1,int l2)
 {
     int P;
+	char* buffer = (char*)calloc(10,sizeof(char));
     do
     {
 		printf("%s",message);
-        scanf ("%d", &P);
+        P = getInt(buffer,stdin);  
     }
     while (P < l1 || P > l2);
+	free(buffer);
     return P;
 }
 void clear(void)
 {
-	system("pause");
 	#ifdef _WIN32
+	    system("pause");
         system("cls");
 	#else 
         system("clear");    
@@ -118,7 +132,6 @@ void addNumber(int** Mat, int rows,int cols)
 				nob = count_nearby_mines(Mat,i,j,rows,cols);
 				if (nob) Mat[i][j] = nob;
 			}
-        	
 		}
 	}
 }
@@ -161,7 +174,9 @@ void printMat(int** mat,int r,int c,FILE* fp)
 {
 	int i,j;
 	fprintf(fp,"\n");
-	for (i = 0;i < c;i++) fprintf(fp," %4d",i+1);
+    // Print the column headers
+	fprintf(fp, "    ");
+	for (i = 0;i < c;i++) fprintf(fp,"%2d  ",i+1);
 	fprintf(fp,"\n");
     for (i = 0;i < r;i++)
 	{
@@ -176,8 +191,8 @@ void printMat(int** mat,int r,int c,FILE* fp)
 		  }
 		  else fprintf(fp," [%c]",mat[i][j]);
 	   }
-
 	}
+	fprintf(fp,"\n");
 }
 
 void play(int** realMat,int** screenMat,int rows,int cols,int bombs)
@@ -209,7 +224,6 @@ void play(int** realMat,int** screenMat,int rows,int cols,int bombs)
 	} while (square != '*' &&  rounds != safeSquares);
 	
 }
-
 int newScreen(int** scrMat,int new_square ,int scr_i,int scr_j)
 {
 	if(scrMat[scr_i][scr_j]  != new_square)
@@ -220,8 +234,6 @@ int newScreen(int** scrMat,int new_square ,int scr_i,int scr_j)
 	else  return 0;
 	 
 }
-
-
 void free_2d (int **Board,int R)
 {
 	int i;
@@ -230,6 +242,8 @@ void free_2d (int **Board,int R)
 }
 	
 	
+
+
 
 
 
