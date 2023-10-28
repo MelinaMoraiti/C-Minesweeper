@@ -30,7 +30,7 @@ int main(int argc, char *argv[])
 	Minefield = Dynamic_2d(M,N);
 	ScreenMinefield = Dynamic_2d(M,N);
 	fillMat(Minefield,M,N,' '); 
-	fillMat(ScreenMinefield,M,N,254); 
+	fillMat(ScreenMinefield,M,N,'X'); 
 	put_mines(Minefield,M,N,K);
 	addNumber(Minefield,M,N);
 	if( ! saveInTxt("Cheat Sheet.txt","w",Minefield,M,N)) printf("Can't open file.\n");
@@ -176,7 +176,7 @@ void printMat(int** mat,int r,int c,FILE* fp)
 	fprintf(fp,"\n");
     // Print the column headers
 	fprintf(fp, "    ");
-	for (i = 0;i < c;i++) fprintf(fp,"%2d  ",i+1);
+	for (i = 0;i < c;i++) fprintf(fp,"%2d   ",i+1);
 	fprintf(fp,"\n");
     for (i = 0;i < r;i++)
 	{
