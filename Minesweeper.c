@@ -22,14 +22,14 @@ void clear(void);
 
 int main(int argc, char *argv[]) 
 {  
-    int M,N,K;
+        int M,N,K;
 	int **Minefield;
 	int **ScreenMinefield;
 	FILE* outFile;
 	M = GetIntWithinLimits("Enter number of rows (maximum 35): ",1,35);
 	N = GetIntWithinLimits("Enter number of columns (maximum 35): ",1,35);
-    K = GetIntWithinLimits("Enter number of bombs: ",0,M*N);
-    clear();
+        K = GetIntWithinLimits("Enter number of bombs: ",0,M*N);
+       clear();
     
 	Minefield = Dynamic_2d(M,N);
 	ScreenMinefield = Dynamic_2d(M,N);
@@ -46,12 +46,12 @@ int main(int argc, char *argv[])
 int saveInTxt(const char* Filename,const char* Mode,int** M,int Rows,int Cols)
 {
 	FILE* outFile;
-    outFile = fopen(Filename,Mode);
+       outFile = fopen(Filename,Mode);
 	if (outFile == NULL) 
 	{
 		return 0;
 	}
-    printMat(M,Rows,Cols,outFile);
+        printMat(M,Rows,Cols,outFile);
 	fclose(outFile);
 	return 1;
 }
@@ -72,26 +72,25 @@ int getInt(char* buffer, FILE* instream)
 int GetIntWithinLimits (char* message,int l1,int l2)
 {
     int P;
-	char* buffer = (char*)calloc(10,sizeof(char));
+    char* buffer = (char*)calloc(10,sizeof(char));
     do
     {
-		printf("%s",message);
+	printf("%s",message);
         P = getInt(buffer,stdin);  
     }
     while (P < l1 || P > l2);
-	free(buffer);
+    free(buffer);
     return P;
 }
 // Function to clear the console screen (cross-platform)
 void clear(void)
 {
 	#ifdef _WIN32
-	    system("pause");
-        system("cls");
+	 system("pause");
+         system("cls");
 	#else 
-        system("clear");    
+         system("clear");    
 	#endif
-	
 }
 // Function to dynamically allocate a 2D array
 int **Dynamic_2d (int R,int C)
@@ -112,7 +111,7 @@ int **Dynamic_2d (int R,int C)
 	  	exit(1);
  	  }	  
     }
-	return Mat2D;
+    return Mat2D;
 }
 // Function to fill a 2D array with a specified value
 void fillMat (int **Board,int R,int C,int num)
