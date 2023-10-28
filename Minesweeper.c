@@ -2,6 +2,10 @@
 #include <string.h>
 #include <stdlib.h>
 #include <time.h>
+
+//The safeFree macro calls the saferFree function and explicitly casts the pointer type to void when we call the function
+#define safeFree(p) saferFree((void**)&(p))
+
 int newScreen(int**,int , int ,int );
 void play(int** ,int** ,int ,int ,int);
 int saveInTxt(const char* ,const char* ,int** ,int ,int );
@@ -51,6 +55,7 @@ int saveInTxt(const char* Filename,const char* Mode,int** M,int Rows,int Cols)
 	fclose(outFile);
 	return 1;
 }
+// Function to safely read an integer from a file stream
 int getInt(char* buffer, FILE* instream)
 {
 	char* stringFound;
@@ -77,6 +82,7 @@ int GetIntWithinLimits (char* message,int l1,int l2)
 	free(buffer);
     return P;
 }
+// Function to clear the console screen (cross-platform)
 void clear(void)
 {
 	#ifdef _WIN32
@@ -87,6 +93,7 @@ void clear(void)
 	#endif
 	
 }
+// Function to dynamically allocate a 2D array
 int **Dynamic_2d (int R,int C)
 {
 	int **Mat2D,i;
@@ -107,7 +114,7 @@ int **Dynamic_2d (int R,int C)
     }
 	return Mat2D;
 }
-
+// Function to fill a 2D array with a specified value
 void fillMat (int **Board,int R,int C,int num)
 {   
     int i,j;
@@ -119,7 +126,7 @@ void fillMat (int **Board,int R,int C,int num)
 		}
 	}	
 }
-
+// Function to add numbers to the minefield based on nearby mines
 void addNumber(int** Mat, int rows,int cols)
 {
 	int i,j,nob;
@@ -135,6 +142,7 @@ void addNumber(int** Mat, int rows,int cols)
 		}
 	}
 }
+// Function to place mines randomly on the minefield
 void put_mines (int **Board,int R,int C,int B)
 {
 	int x,i,j;
@@ -150,6 +158,7 @@ void put_mines (int **Board,int R,int C,int B)
 		else x--;		
 	}
 }
+// Function to count the number of nearby mines for a cell
 int count_nearby_mines(int** Mat,int line, int col,int lines, int cols)
 {
 	int i,j;
@@ -194,7 +203,7 @@ void printMat(int** mat,int r,int c,FILE* fp)
 	}
 	fprintf(fp,"\n");
 }
-
+// Function to manage the game logic
 void play(int** realMat,int** screenMat,int rows,int cols,int bombs)
 {
 	int i,j,square,rounds=0,safeSquares;
@@ -224,6 +233,7 @@ void play(int** realMat,int** screenMat,int rows,int cols,int bombs)
 	} while (square != '*' &&  rounds != safeSquares);
 	
 }
+// Function to update the screen display with the revealed square
 int newScreen(int** scrMat,int new_square ,int scr_i,int scr_j)
 {
 	if(scrMat[scr_i][scr_j]  != new_square)
@@ -234,11 +244,20 @@ int newScreen(int** scrMat,int new_square ,int scr_i,int scr_j)
 	else  return 0;
 	 
 }
+// Function to safely free a pointer
+// Checks the pointer passed to see whether it is NULL and sets the pointer to NULL before it returns.
+void saferFree(void **ptr) {
+	if (ptr != NULL && *ptr != NULL) 
+	{
+		free(*ptr);
+		*ptr = NULL;
+	}
+}
 void free_2d (int **Board,int R)
 {
 	int i;
-	for (i=0;i< R;i++) free (Board[i]);
-	free (Board);
+	for (i=0;i< R;i++) safeFree (Board[i]);
+	safeFree (Board);
 }
 	
 	
