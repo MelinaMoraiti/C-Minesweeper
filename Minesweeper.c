@@ -12,7 +12,7 @@ int saveInTxt(const char* ,const char* ,int** ,int ,int );
 void addNumber(int** , int ,int );
 void printMat(int**,int ,int ,FILE*);
 int count_nearby_mines(int** ,int , int ,int , int );
-int GetIntWithinLimits(char* message,int, int);
+int GetIntWithinLimits(char* ,char *,int, int);
 int **Dynamic_2d (int ,int );
 int GetRandom (int , int );
 void fillMat (int**,int ,int ,int);
@@ -26,10 +26,10 @@ int main(int argc, char *argv[])
 	int **Minefield;
 	int **ScreenMinefield;
 	FILE* outFile;
-	M = GetIntWithinLimits("Enter number of rows (maximum 35): ",1,35);
-	N = GetIntWithinLimits("Enter number of columns (maximum 35): ",1,35);
-        K = GetIntWithinLimits("Enter number of bombs: ",0,M*N);
-       clear();
+	M = GetIntWithinLimits("Enter number of rows (maximum 35): ","Row number is out of range",1,35);
+	N = GetIntWithinLimits("Enter number of columns (maximum 35): ","Column number is out of range",1,35);
+    K = GetIntWithinLimits("Enter number of mines: ","Number of mines is out of range",1,M*N);
+    clear();
     
 	Minefield = Dynamic_2d(M,N);
 	ScreenMinefield = Dynamic_2d(M,N);
@@ -37,7 +37,7 @@ int main(int argc, char *argv[])
 	fillMat(ScreenMinefield,M,N,'X'); 
 	put_mines(Minefield,M,N,K);
 	addNumber(Minefield,M,N);
-	if( ! saveInTxt("Cheat Sheet.txt","w",Minefield,M,N)) printf("Can't open file.\n");
+	if( ! saveInTxt("Cheatsheet.txt","w",Minefield,M,N)) printf("Can't open file.\n");
 	play(Minefield,ScreenMinefield,M,N,K); 
 	free_2d(Minefield,M);
 	free_2d(ScreenMinefield,M);
@@ -65,18 +65,20 @@ int getInt(char* buffer, FILE* instream)
 		fgets(buffer,sizeof(buffer),instream);
 		*(buffer + strlen(buffer) - 1) = 0;
      	number = strtol(buffer,&stringFound,10);	
+		if(strlen(stringFound) > 0) printf("Not an integer...\n");
 	} while(strlen(stringFound) > 0);
 	return number;
 }
 
-int GetIntWithinLimits (char* message,int l1,int l2)
+int GetIntWithinLimits (char* message,char* errorMessage,int l1,int l2)
 {
     int P;
     char* buffer = (char*)calloc(10,sizeof(char));
     do
     {
-	printf("%s",message);
+		printf("%s",message);
         P = getInt(buffer,stdin);  
+		if (P < l1 || P > l2) printf("%s\n",errorMessage);
     }
     while (P < l1 || P > l2);
     free(buffer);
@@ -99,7 +101,7 @@ int **Dynamic_2d (int R,int C)
 	Mat2D = (int **) malloc (R * sizeof(int *));
 	if ( Mat2D == NULL)
 	{
-		puts("Not enough memory.\n");
+		puts("Not enough memory...\n");
 	  	exit(1);
 	}
 	for (i=0;i < R;i++)
@@ -107,7 +109,7 @@ int **Dynamic_2d (int R,int C)
 	  Mat2D[i] = (int *) malloc(C * sizeof(int));
 	  if (Mat2D[i] == NULL)
 	  {
-	  	puts("Not Enough memory.\n");
+	  	puts("Not Enough memory...\n");
 	  	exit(1);
  	  }	  
     }
@@ -211,9 +213,9 @@ void play(int** realMat,int** screenMat,int rows,int cols,int bombs)
 	{
 		clear();
 		printMat(screenMat,rows,cols,stdout);
-		puts("\n\nChoose a square");
-		i = GetIntWithinLimits("Line: ",1,rows);
-		j = GetIntWithinLimits("Column: ", 1,cols);
+		puts("\n\nChoose a square to reveal");
+		i = GetIntWithinLimits("Line: ","Invalid range of row",1,rows);
+		j = GetIntWithinLimits("Column: ","Invalid range of column", 1,cols);
 		square = realMat[i-1][j-1] ;
 		if(newScreen(screenMat,square,i-1,j-1)) rounds++;
 		if (rounds == safeSquares)	
@@ -258,8 +260,6 @@ void free_2d (int **Board,int R)
 	for (i=0;i< R;i++) safeFree (Board[i]);
 	safeFree (Board);
 }
-	
-	
 
 
 
