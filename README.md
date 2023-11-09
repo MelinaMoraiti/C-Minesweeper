@@ -23,11 +23,11 @@ C-Minesweeper is a text-based implementation of the classic Minesweeper game in 
 4. **How to Play:**
 - The game will prompt you to enter the following information interactively:
 
-     4.1. Number of rows: Enter the desired number of rows for the game grid and press Enter.
-     4.2. Number of columns: Enter the desired number of columns and press Enter.
-     4.3. Number of mines: Specify the number of mines to be placed on the grid and press Enter.
-     4.4. Enter action 'R' or 'r' to reveal a cell and 'F' or 'f' to flag a cell.
-     4.5. Enter coordinates (row and column) to reveal or cells.
+   1. Number of rows: Enter the desired number of rows for the game grid and press Enter.
+   2. Number of columns: Enter the desired number of columns and press Enter.
+   3. Number of mines: Specify the number of mines to be placed on the grid and press Enter.
+   4. Enter action 'R' or 'r' to reveal a cell and 'F' or 'f' to flag a cell.
+   5. Enter coordinates (row and column) to reveal or cells.
   
 - Input Validation:
   
