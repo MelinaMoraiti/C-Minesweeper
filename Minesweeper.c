@@ -11,6 +11,7 @@ void play(int** ,int** ,int ,int ,int);
 int saveInTxt(const char* ,const char* ,int** ,int ,int );
 void addNumber(int** , int ,int );
 void printMat(int**,int ,int ,FILE*);
+char getAction(char*,char*);
 int count_nearby_mines(int** ,int , int ,int , int );
 int GetIntWithinLimits(char* ,char *,int, int);
 int **Dynamic_2d (int ,int );
@@ -69,7 +70,24 @@ int getInt(char* buffer, FILE* instream)
 	} while(strlen(stringFound) > 0);
 	return number;
 }
+char getAction(char* message,char* errorMessage)
+{
+    char action;
+    int scanfResult;
+    do
+    {
+        printf("%s", message);
+        scanfResult = scanf(" %2c", &action);
 
+        if (scanfResult != 1 || (action != 'R' && action != 'F' && action != 'r' && action != 'f'))
+        {
+            printf("%s\n", errorMessage);
+            // Flush the input buffer
+            while ((scanfResult = getchar()) != '\n' && scanfResult != EOF);
+        }
+    } while (action != 'R' && action != 'F' && action != 'f' && action != 'r');
+    return action;
+}
 int GetIntWithinLimits (char* message,char* errorMessage,int l1,int l2)
 {
     int P;
@@ -78,7 +96,10 @@ int GetIntWithinLimits (char* message,char* errorMessage,int l1,int l2)
     {
 		printf("%s",message);
         P = getInt(buffer,stdin);  
-		if (P < l1 || P > l2) printf("%s\n",errorMessage);
+		if (P < l1 || P > l2)
+		{
+			printf("%s\n",errorMessage);
+		} 
     }
     while (P < l1 || P > l2);
     free(buffer);
@@ -208,16 +229,25 @@ void printMat(int** mat,int r,int c,FILE* fp)
 void play(int** realMat,int** screenMat,int rows,int cols,int bombs)
 {
 	int i,j,square,rounds=0,safeSquares;
+	char a;
 	safeSquares=rows*cols - bombs;
 	do
 	{
 		clear();
 		printMat(screenMat,rows,cols,stdout);
-		puts("\n\nChoose a square to reveal");
+		a = getAction("\n\nEnter action (R/r for reveal, F/f for flag): ","Invalid Action");
 		i = GetIntWithinLimits("Line: ","Invalid range of row",1,rows);
 		j = GetIntWithinLimits("Column: ","Invalid range of column", 1,cols);
-		square = realMat[i-1][j-1] ;
-		if(newScreen(screenMat,square,i-1,j-1)) rounds++;
+		
+		if (a == 'F' || a =='f') 
+		{
+			square = 'F';
+			newScreen(screenMat,square,i-1,j-1);
+		}
+		else
+		{   square = realMat[i-1][j-1];
+			if(newScreen(screenMat,square,i-1,j-1)) rounds++;
+		}
 		if (rounds == safeSquares)	
 		{
 			clear();
@@ -260,6 +290,8 @@ void free_2d (int **Board,int R)
 	for (i=0;i< R;i++) safeFree (Board[i]);
 	safeFree (Board);
 }
+	
+	
 
 
 
