@@ -31,8 +31,8 @@ C-Minesweeper is a text-based implementation of the classic Minesweeper game in 
   
 - Input Validation:
   
-The game checks user input for both integers and characters, providing appropriate error messages.
-The input buffer is cleared to ensure accurate input handling.
+   The game checks user input for both integers and characters, providing appropriate error messages.
+   The input buffer is cleared to ensure accurate input handling.
 
 Feel free to explore the source code for more details about the game's specific features and controls.
 
