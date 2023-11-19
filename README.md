@@ -1,6 +1,16 @@
 # C-Minesweeper
 
 C-Minesweeper is a text-based implementation of the classic Minesweeper game in C.
+## Features
+
+- Input Validation:
+  
+   The game checks user input for both integers and characters, providing appropriate error messages.
+   The input buffer is cleared to ensure accurate input handling.
+  
+- Reusability:
+  
+   Functions are designed to be reusable, facilitating code reuse across different sections of the project or even in other projects.
 
 ## Getting Started
 
@@ -29,10 +39,7 @@ C-Minesweeper is a text-based implementation of the classic Minesweeper game in 
    4. Enter action 'R' or 'r' to reveal a cell and 'F' or 'f' to flag a suspected mine.
    5. Enter coordinates (row and column) to reveal or flag cells.
   
-- Input Validation:
-  
-   The game checks user input for both integers and characters, providing appropriate error messages.
-   The input buffer is cleared to ensure accurate input handling.
+
 
 Feel free to explore the source code for more details about the game's specific features and controls.
 
