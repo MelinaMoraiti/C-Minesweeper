@@ -1,4 +1,4 @@
-# C-Minesweeper
+# C-Minesweeper 💣
 C-Minesweeper is a text-based implementation of the classic Minesweeper game in C.
 
 ## Features 🌟
